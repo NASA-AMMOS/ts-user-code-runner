@@ -239,7 +239,10 @@ export class UserCodeRunner {
 			await harnessModule.evaluate({
 				timeout,
 			});
-			return Result.Ok(context.__result);
+			const result = context.__result;
+			delete context.__args;
+			delete context.__result;
+			return Result.Ok(result);
 		} catch (error: any) {
 			return Result.Err([UserCodeRuntimeError.new(error as Error, await new SourceMapConsumer(sourceMap))]);
 		}
